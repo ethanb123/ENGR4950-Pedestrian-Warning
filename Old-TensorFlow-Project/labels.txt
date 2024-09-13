@@ -1,0 +1,4 @@
+0 Empty
+1 Cones
+2 Handicap
+3 Newspaper
