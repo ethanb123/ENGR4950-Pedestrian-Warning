@@ -1,7 +1,7 @@
 from gpiozero import MotionSensor
 import time
 
-pir = MotionSensor(4)
+pir = MotionSensor(14)
 print("You moved111")
 i=0
 
