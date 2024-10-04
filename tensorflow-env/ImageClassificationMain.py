@@ -1,3 +1,6 @@
+# Toggle for some debug bits that may not end up in production
+development = True
+
 
 # Picamera2 is how the raspberry pi interacts with the CSI (Camera Serial Interface) Camera
 # Tensorflow is a machine learning model library that allows us to classify images
@@ -125,7 +128,8 @@ def readCameraAndCompareModel():
 
 
         # Display the resulting frame
-        cv2.imshow('frame', frame)
+        if development:
+            cv2.imshow('frame', frame)
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
