@@ -1,1 +1,5 @@
 .venv/
+/tensorflow-env/lib
+/tensorflow-env/bin
+/tensorflow-env/lib64
+/tensorflow-env/pyvenv.cfg

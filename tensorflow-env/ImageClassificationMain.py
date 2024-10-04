@@ -9,7 +9,7 @@ picam2.configure(picam2.create_preview_configuration(main={"format": 'RGB888', "
 picam2.start()
 
 # Load the TensorFlow Lite model
-interpreter = tf.lite.Interpreter(model_path="/home/ethan/Desktop/CarProjectSubmission/TF/model_unquant.tflite")
+interpreter = tf.lite.Interpreter(model_path="/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/Old-TensorFlow-Project/model_unquant.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors
@@ -18,18 +18,20 @@ output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
 # Load the list of labels
-with open("/home/ethan/Desktop/CarProjectSubmission/TF/labels.txt", 'r') as f:
+with open("/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/Old-TensorFlow-Project/labels.txt", 'r') as f:
     labels = [line.strip() for line in f.readlines()]
 
 # Start the camera
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
+#im = picam2.capture_array()
+#cap = cv2.imshow("Camera", im)
 #im = picam2.capture_array()
 #    cv2.imshow("Camera", im)
 #    cv2.waitKey(1)
  
 while True:
     # Capture frame-by-frame
-    ret, frame = cap.read()
+    frame = picam2.capture_array()
 
     # Resize the frame to match the input tensor shape
     resized_frame = cv2.resize(frame, (input_shape[1], input_shape[2]))
