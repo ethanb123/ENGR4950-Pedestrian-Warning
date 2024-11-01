@@ -1,6 +1,8 @@
 # Toggle for some debug bits that may not end up in production
 development = True
 
+# cd Desktop/ENGR4950-Pedestrian-Warning/tensorflow-env/
+# source bin/activate
 
 # Picamera2 is how the raspberry pi interacts with the CSI (Camera Serial Interface) Camera
 # Tensorflow is a machine learning model library that allows us to classify images
@@ -46,7 +48,7 @@ picam2.configure(picam2.create_preview_configuration(main={"format": 'RGB888', "
 picam2.start()
 
 # Load the TensorFlow Lite model
-interpreter = tf.lite.Interpreter(model_path="/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/Old-TensorFlow-Project/model_unquant.tflite")
+interpreter = tf.lite.Interpreter(model_path="/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/tensorflow-env/model_unquant.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors
@@ -55,7 +57,7 @@ output_details = interpreter.get_output_details()
 input_shape = input_details[0]['shape']
 
 # Load the list of labels
-with open("/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/Old-TensorFlow-Project/labels.txt", 'r') as f:
+with open("/home/rpi/Desktop/ENGR4950-Pedestrian-Warning/tensorflow-env/labels.txt", 'r') as f:
     labels = [line.strip() for line in f.readlines()]
  
 # Exit handler will release the relay before the program exits
@@ -74,13 +76,39 @@ atexit.register(exit_handler)
 def activateLightRelay():
     time_started = time.time()
     try:
-        while not (time.time() > time_started + 5):
-            led_line.set_value(1)
-            time.sleep(0.5)
-            led_line.set_value(0)
-            led_line2.set_value(1)
-            time.sleep(0.5)
-            led_line2.set_value(0)
+        #while not (time.time() > time_started + 5):
+        # First set of individual blinking
+        led_line.set_value(1)
+        time.sleep(0.5)
+        led_line.set_value(0)
+        time.sleep(0.5)
+        led_line2.set_value(1)
+        time.sleep(0.5)
+        led_line2.set_value(0)
+        time.sleep(0.5)
+        # Second set of individual blinking
+        led_line.set_value(1)
+        time.sleep(0.5)
+        led_line.set_value(0)
+        time.sleep(0.5)
+        led_line2.set_value(1)
+        time.sleep(0.5)
+        led_line2.set_value(0)
+        time.sleep(0.5)
+        # Both lights blinking set 1
+        led_line.set_value(1)
+        led_line2.set_value(1)
+        time.sleep(0.5)
+        led_line.set_value(0)
+        led_line2.set_value(0)
+        time.sleep(0.5)
+        # Both lights blinking set 2
+        led_line.set_value(1)
+        led_line2.set_value(1)
+        time.sleep(0.5)
+        led_line.set_value(0)
+        led_line2.set_value(0)
+        time.sleep(2.5)
     finally:
         led_line.set_value(0)
         led_line2.set_value(0)
@@ -135,17 +163,17 @@ def readCameraAndCompareModel():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        if label == "1 Cones":
+        if label == "1 Pedestrian":
             activateLightRelay()
 
         
 
 # Initialize the Threads
-rainThread = Thread(target = readRainSensor, daemon = True)
+#rainThread = Thread(target = readRainSensor, daemon = True)
 cameraThread = Thread(target = readCameraAndCompareModel, daemon = True)
 
 
-rainThread.start()
+#rainThread.start()
 cameraThread.start()
 while True:
     pass
