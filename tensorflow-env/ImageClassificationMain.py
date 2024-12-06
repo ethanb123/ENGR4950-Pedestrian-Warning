@@ -154,6 +154,9 @@ def readCameraAndCompareModel():
         label = labels[label_index]
         cv2.putText(frame, label, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
+        max_probability = int(np.max(output_data)*100)
+        cv2.putText(frame, (str(max_probability)+"%"), (30, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
 
         # Display the resulting frame
         if development:
@@ -163,7 +166,7 @@ def readCameraAndCompareModel():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        if label == "1 Pedestrian":
+        if (label == "1 Pedestrian" and max_probability>90):
             activateLightRelay()
 
         
